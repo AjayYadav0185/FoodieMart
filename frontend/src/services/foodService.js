@@ -10,11 +10,13 @@ export const search = async (searchTerm) => {
   return data;
 };
 
+export const searchTicket = async (searchTicketTerm) => {
+  const { data } = await axios.get("/api/foods/search/" + searchTicketTerm);
+  return data;
+};
+
 export const getAllTags = async () => {
-  console.log("data");
   const { data } = await axios.get("/api/foods/tags");
-  console.log(data);
-  console.log("sasa");
   return data;
 };
 

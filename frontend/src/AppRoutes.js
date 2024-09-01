@@ -14,6 +14,7 @@ import OrdersPage from "./pages/Orders/OrdersPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import FoodsAdminPage from "./pages/FoodsAdmin/FoodsAdminPage";
+import TicketAdminPage from "./pages/TicketAdmin/TicketAdminPage";
 import FoodEditPage from "./pages/FoodEdit/FoodEditPage";
 import UsersPage from "./pages/UsersPage/UsersPage";
 import UserEditPage from "./pages/UserEdit/UserEditPage";
@@ -81,6 +82,14 @@ export default function AppRoutes() {
         element={
           <AdminRoute>
             <FoodsAdminPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/tickets/:searchTerm?"
+        element={
+          <AdminRoute>
+            <TicketAdminPage />
           </AdminRoute>
         }
       />

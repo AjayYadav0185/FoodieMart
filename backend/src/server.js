@@ -3,6 +3,7 @@ dotenv.config();
 import { fileURLToPath } from "url";
 import express from "express";
 import cors from "cors";
+import ticketRouter from "./routers/ticket.router.js";
 import foodRouter from "./routers/food.router.js";
 import userRouter from "./routers/user.router.js";
 import orderRouter from "./routers/order.router.js";
@@ -25,6 +26,7 @@ app.use(
   })
 );
 
+app.use("/api/tickets", ticketRouter);
 app.use("/api/foods", foodRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);

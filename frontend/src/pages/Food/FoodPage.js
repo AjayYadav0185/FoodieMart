@@ -34,7 +34,7 @@ export default function FoodPage() {
         <div className={classes.container}>
           <img
             className={classes.image}
-            src={`/${food.imageUrl}`}
+            src={`${food.imageUrl}`}
             onError={onErrorHandleChanges}
             alt={food.name}
           />

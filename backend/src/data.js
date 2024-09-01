@@ -3,7 +3,7 @@ export const sample_foods = [
     id: "1",
     name: "Pizza Pepperoni",
     cookTime: "10-20",
-    price: 10,
+    price: 110,
     stock: 10,
     favorite: false,
     origins: ["italy"],
@@ -14,7 +14,7 @@ export const sample_foods = [
   {
     id: "2",
     name: "Meatball",
-    price: 20,
+    price: 210,
     stock: 20,
     cookTime: "20-30",
     favorite: true,
@@ -26,7 +26,7 @@ export const sample_foods = [
   {
     id: "3",
     name: "Hamburger",
-    price: 5,
+    price: 98,
     stock: 5,
     cookTime: "10-15",
     favorite: false,
@@ -38,7 +38,7 @@ export const sample_foods = [
   {
     id: "4",
     name: "Fried Potatoes",
-    price: 2,
+    price: 190,
     stock: 2,
     cookTime: "15-20",
     favorite: true,
@@ -50,7 +50,7 @@ export const sample_foods = [
   {
     id: "5",
     name: "Chicken Soup",
-    price: 11,
+    price: 110,
     stock: 11,
     cookTime: "40-50",
     favorite: false,
@@ -62,7 +62,7 @@ export const sample_foods = [
   {
     id: "6",
     name: "Vegetables Pizza",
-    price: 9,
+    price: 290,
     stock: 9,
     cookTime: "40-50",
     favorite: false,
@@ -100,5 +100,37 @@ export const sample_users = [
     password: "ajaykumar@123",
     address: "Gurugram",
     isAdmin: false,
+  },
+  {
+    id: 3,
+    name: "SampleKing",
+    email: "sampleKing@gmail.com",
+    password: "sampleKing@123",
+    address: "Sector 10A, Gurgaon, Haryana",
+    isAdmin: true,
+  },
+];
+
+export const sample_tickets = [
+  {
+    id: 1,
+    code: "SAVE10",
+    label: "Save 10 %",
+    mark: 0.1,
+    isActive: true,
+  },
+  {
+    id: 2,
+    code: "SAVE20",
+    label: "Save 20 %",
+    mark: 0.2,
+    isActive: true,
+  },
+  {
+    id: 3,
+    code: "SAVE30",
+    label: "Save 30 %",
+    mark: 0.3,
+    isActive: true,
   },
 ];

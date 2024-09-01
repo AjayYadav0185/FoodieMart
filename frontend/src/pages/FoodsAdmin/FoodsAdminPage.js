@@ -14,13 +14,12 @@ export default function FoodsAdminPage() {
   const { searchTerm } = useParams();
 
   useEffect(() => {
+    const loadFoods = async () => {
+      const foods = searchTerm ? await search(searchTerm) : await getAll();
+      setFoods(foods);
+    };
     loadFoods();
   }, [searchTerm]);
-
-  const loadFoods = async () => {
-    const foods = searchTerm ? await search(searchTerm) : await getAll();
-    setFoods(foods);
-  };
 
   const FoodsNotFound = () => {
     if (foods && foods.length > 0) return;
@@ -58,7 +57,7 @@ export default function FoodsAdminPage() {
         {foods &&
           foods.map((food) => (
             <div key={food.id} className={classes.list_item}>
-              <img src={`/${food.imageUrl}`} alt={food.name} />
+              <img src={`${food.imageUrl}`} alt={food.name} />
               <Link to={"/food/" + food.id}>{food.name}</Link>
               <Price price={food.price} />
               <Stock stock={food.stock} />

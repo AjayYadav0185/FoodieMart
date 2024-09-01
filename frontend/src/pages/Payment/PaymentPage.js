@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import classes from './paymentPage.module.css';
-import { getNewOrderForCurrentUser } from '../../services/orderService';
-import Title from '../../components/Title/Title';
-import OrderItemsList from '../../components/OrderItemsList/OrderItemsList';
-import Map from '../../components/Map/Map';
-import PaypalButtons from '../../components/PaypalButtons/PaypalButtons';
+import React, { useState, useEffect } from "react";
+import classes from "./paymentPage.module.css";
+import { getNewOrderForCurrentUser } from "../../services/orderService";
+import Title from "../../components/Title/Title";
+import OrderItemsList from "../../components/OrderItemsList/OrderItemsList";
+import Map from "../../components/Map/Map";
+import PaypalButtons from "../../components/PaypalButtons/PaypalButtons";
 
 export default function PaymentPage() {
   const [order, setOrder] = useState();
 
   useEffect(() => {
-    getNewOrderForCurrentUser().then(data => setOrder(data));
+    getNewOrderForCurrentUser().then((data) => setOrder(data));
   }, []);
 
   if (!order) return;

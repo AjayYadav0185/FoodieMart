@@ -60,4 +60,12 @@ const allItems = [
     bgColor: "#e040fb",
     color: "white",
   },
+  {
+    title: "Coupon Management",
+    imageUrl: "/icons/tickets.svg",
+    url: "/admin/tickets",
+    forAdmin: true,
+    bgColor: "#5da150",
+    color: "white",
+  },
 ];

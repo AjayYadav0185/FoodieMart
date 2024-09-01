@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getAll } from "../services/ticketService";
 
 const CartContext = createContext(null);
 const CART_KEY = "cart";
@@ -9,27 +10,21 @@ const EMPTY_CART = {
   totalCount: 0,
 };
 
-// Mock discount data for demo purposes
-const DISCOUNTS = {
-  SAVE10: 0.1, // 10% off
-  SAVE20: 0.2, // 20% off
-};
-
 export default function CartProvider({ children }) {
   const initCart = getCartFromLocalStorage();
   const [cartItems, setCartItems] = useState(initCart.items);
   const [totalPrice, setTotalPrice] = useState(initCart.totalPrice);
   const [totalCount, setTotalCount] = useState(initCart.totalCount);
   const [couponDiscount, setCouponDiscount] = useState(0);
+  const [DISCOUNTS, setDiscount] = useState({});
 
   useEffect(() => {
     const totalPrice = sum(cartItems.map((item) => item.price));
     const totalCount = sum(cartItems.map((item) => item.quantity));
     const discountedPrice = totalPrice * (1 - couponDiscount); // Apply discount if any
-
+    loadDiscount();
     setTotalPrice(discountedPrice);
     setTotalCount(totalCount);
-
     localStorage.setItem(
       CART_KEY,
       JSON.stringify({
@@ -40,6 +35,19 @@ export default function CartProvider({ children }) {
       })
     );
   }, [cartItems, couponDiscount]);
+
+  const loadDiscount = async () => {
+    try {
+      const discountData = await getAll();
+      const discountObject = {};
+      discountData.forEach((discountItem) => {
+        discountObject[discountItem.code] = discountItem.mark;
+      });
+      setDiscount(discountObject);
+    } catch (error) {
+      console.error("Error loading discounts:", error);
+    }
+  };
 
   function getCartFromLocalStorage() {
     const storedCart = localStorage.getItem(CART_KEY);
@@ -81,7 +89,7 @@ export default function CartProvider({ children }) {
   const clearCart = () => {
     setTotalPrice(totalPrice);
     setTotalCount(totalCount);
-    setCouponDiscount(0); // Clear coupon discount
+    setCouponDiscount(0);
   };
 
   const addToCart = (food) => {
@@ -100,7 +108,7 @@ export default function CartProvider({ children }) {
       setCouponDiscount(discount);
       toast.success("Coupon applied successfully!");
     } else {
-      toast.error("Invalid coupon code");
+      toast.error("Coupon code is not exist");
     }
   };
 
@@ -112,7 +120,7 @@ export default function CartProvider({ children }) {
         changeQuantity,
         addToCart,
         clearCart,
-        applyCoupon, // Expose the applyCoupon function
+        applyCoupon,
       }}
     >
       {children}

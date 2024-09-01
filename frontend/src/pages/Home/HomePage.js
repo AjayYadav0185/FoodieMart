@@ -34,7 +34,6 @@ export default function HomePage() {
       dispatch({ type: "TAGS_LOADED", payload: tags })
     );
 
-    console.log(tags);
     const loadFoods = tag
       ? getAllByTag(tag)
       : searchTerm
@@ -45,7 +44,6 @@ export default function HomePage() {
       dispatch({ type: "FOODS_LOADED", payload: foods })
     );
 
-    console.log(tag);
   }, [searchTerm, tag]);
 
   return (

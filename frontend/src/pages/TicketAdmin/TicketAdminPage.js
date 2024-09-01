@@ -48,7 +48,7 @@ export default function TicketAdminPage() {
           margin="1rem 0"
           placeholder="Search Tickets"
         />
-        <Link to="/admin/addFood" className={classes.add_ticket}>
+        <Link to="/admin/addTicket" className={classes.add_ticket}>
           Add Ticket +
         </Link>
         <TicketsNotFound />
@@ -60,7 +60,7 @@ export default function TicketAdminPage() {
               </Link>
               {ticket.label}
               <div className={classes.actions}>
-                <Link to={"/admin/editFood/" + ticket.id}>Edit</Link>
+                <Link to={"/admin/editTicket/" + ticket.id}>Edit</Link>
                 <Link onClick={() => deleteTicket(ticket)}>Delete</Link>
               </div>
             </div>

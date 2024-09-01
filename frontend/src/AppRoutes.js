@@ -18,6 +18,7 @@ import TicketAdminPage from "./pages/TicketAdmin/TicketAdminPage";
 import FoodEditPage from "./pages/FoodEdit/FoodEditPage";
 import UsersPage from "./pages/UsersPage/UsersPage";
 import UserEditPage from "./pages/UserEdit/UserEditPage";
+import TicketEditPage from "./pages/TicketEdit/TicketEditPage";
 
 export default function AppRoutes() {
   return (
@@ -90,6 +91,23 @@ export default function AppRoutes() {
         element={
           <AdminRoute>
             <TicketAdminPage />
+          </AdminRoute>
+        }
+      />
+
+      <Route
+        path="/admin/addTicket"
+        element={
+          <AdminRoute>
+            <TicketEditPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/editTicket/:ticketId"
+        element={
+          <AdminRoute>
+            <TicketEditPage />
           </AdminRoute>
         }
       />

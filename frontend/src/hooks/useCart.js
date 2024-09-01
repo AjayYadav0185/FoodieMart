@@ -90,6 +90,11 @@ export default function CartProvider({ children }) {
     setTotalPrice(totalPrice);
     setTotalCount(totalCount);
     setCouponDiscount(0);
+    const updateCartItems = cartItems.map((item) => {
+      item.discount = item.food.price;
+      return item;
+    });
+    setCartItems(updateCartItems);
   };
 
   const addToCart = (food) => {
@@ -98,17 +103,25 @@ export default function CartProvider({ children }) {
     if (cartItem) {
       changeQuantity(cartItem, cartItem.quantity + 1);
     } else {
-      setCartItems([...cartItems, { food, quantity: 1, price: food.price }]);
+      setCartItems([
+        ...cartItems,
+        { food, quantity: 1, price: food.price, discount: food.price },
+      ]);
     }
   };
 
   const applyCoupon = (couponCode) => {
     const discount = DISCOUNTS[couponCode.toUpperCase()];
     if (discount) {
+      const updateCartItems = cartItems.map((item) => {
+        item.discount = item.food.price * (1 - discount) * item.quantity;
+        return item;
+      });
+      setCartItems(updateCartItems);
       setCouponDiscount(discount);
       toast.success("Coupon applied successfully!");
     } else {
-      toast.error("Coupon code is not exist");
+      toast.error("Coupon code is expire");
     }
   };
 

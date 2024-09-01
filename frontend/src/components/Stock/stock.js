@@ -5,7 +5,7 @@ const Stock = ({ stock, locale, currency, lowStockThreshold }) => {
 
   return (
     <div>
-      <span>{stock}</span>
+      <span>In Stock {stock}</span>
       {isLowStock && (
         <span style={{ color: "red", marginLeft: "8px" }}>(Low stock!)</span>
       )}

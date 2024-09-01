@@ -59,9 +59,9 @@ const getReceiptHtml = function (order) {
               `
             <tr>
             <td>${item.food.name}</td>
-            <td>$${item.food.price}</td>
+            <td>₹${item.food.price}</td>
             <td>${item.quantity}</td>    
-            <td>$${item.price.toFixed(2)}</td>
+            <td>₹${item.discount.toFixed(2)}</td>
             </tr>
             `
           )
@@ -70,7 +70,7 @@ const getReceiptHtml = function (order) {
           <tfoot>
           <tr>
           <td colspan="3"><strong>Total:</strong></td>
-          <td>$${order.totalPrice}</td>
+          <td>₹${order.totalPrice}</td>
           </tr>
           </tfoot>
           </table>

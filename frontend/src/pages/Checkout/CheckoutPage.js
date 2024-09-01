@@ -29,7 +29,6 @@ export default function CheckoutPage() {
       toast.warning("Please select your location on the map");
       return;
     }
-
     await createOrder({ ...order, name: data.name, address: data.address });
     navigate("/payment");
   };

@@ -22,7 +22,6 @@ export default function CartPage() {
   };
 
   const handleApplyCoupon = () => {
-    // Call the applyCoupon function with the coupon code
     applyCoupon(couponCode);
   };
 

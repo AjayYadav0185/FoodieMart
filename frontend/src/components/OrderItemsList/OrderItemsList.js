@@ -25,7 +25,7 @@ export default function OrderItemsList({ order }) {
             </td>
             <td>{item.quantity}</td>
             <td>
-              <Price price={item.price} />
+              <Price originalPrice={item.price} price={item.discount} />
             </td>
           </tr>
         ))}

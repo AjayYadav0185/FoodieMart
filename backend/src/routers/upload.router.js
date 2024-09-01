@@ -1,17 +1,17 @@
-import { Router } from 'express';
-import admin from '../middleware/admin.mid.js';
-import multer from 'multer';
-import handler from 'express-async-handler';
-import { BAD_REQUEST } from '../constants/httpStatus.js';
-import { configCloudinary } from '../config/cloudinary.config.js';
+import { Router } from "express";
+import admin from "../middleware/admin.mid.js";
+import multer from "multer";
+import handler from "express-async-handler";
+import { BAD_REQUEST } from "../constants/httpStatus.js";
+import { configCloudinary } from "../config/cloudinary.config.js";
 
 const router = Router();
 const upload = multer();
 
 router.post(
-  '/',
+  "/",
   admin,
-  upload.single('image'),
+  upload.single("image"),
   handler(async (req, res) => {
     const file = req.file;
     if (!file) {
@@ -24,7 +24,7 @@ router.post(
   })
 );
 
-const uploadImageToCloudinary = imageBuffer => {
+const uploadImageToCloudinary = (imageBuffer) => {
   const cloudinary = configCloudinary();
 
   return new Promise((resolve, reject) => {

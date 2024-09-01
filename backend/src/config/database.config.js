@@ -1,34 +1,36 @@
 import { connect, set } from "mongoose";
 
 import mysql from "mysql2/promise";
+import { UserModel } from "../models/user.model.js";
+import { FoodModel } from "../models/food.model.js";
 import { sample_users } from "../data.js";
 import { sample_foods } from "../data.js";
 import bcrypt from "bcryptjs";
 const PASSWORD_HASH_SALT_ROUNDS = 10;
 
 export const pool = mysql.createPool({
-  host: "localhost", // e.g., 'localhost'
-  user: "root", // e.g., 'root'
-  password: "", // e.g., 'password'
-  database: "mern", // e.g., 'test'
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "mern",
   waitForConnections: true,
   connectionLimit: 10,
 });
 
 export const dbconnect = async () => {
   try {
-    // const connection = await pool.getConnection();
-    // console.log("Connected to MySQL database successfully!");
-    // connection.release();
+    const connection = await pool.getConnection();
+    console.log("Connected to MySQL database successfully!");
+    connection.release();
     connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    // global.dbconn = connection; // Ensure that dbconnect() returns the connection
+    global.db = connection;
 
-    // await seedUsers();
-    // await seedFoods();
+    await seedFood();
+    await seedUsers();
 
     console.log("connect successfully---");
   } catch (error) {
@@ -36,105 +38,82 @@ export const dbconnect = async () => {
   }
 };
 
-// async function seedUsers() {
-//   try {
-//     const [rows] = await global.dbconn.query(
-//       "SELECT COUNT(*) AS count FROM users"
-//     );
-//     const count = rows[0].count;
+async function seedUsers() {
+  const [rows] = await global.db.query("SELECT COUNT(*) AS count FROM users");
+  const count = rows[0].count;
+  const usersCount = await UserModel.countDocuments();
+  if (count > 0 && usersCount > 0) {
+    console.log("Users seed is already done!");
+    return;
+  }
 
-//     if (count > 0) {
-//       console.log("Users seed is already done!");
-//       return;
-//     }
+  for (let user of sample_users) {
+    user.password = await bcrypt.hash(user.password, PASSWORD_HASH_SALT_ROUNDS);
+    var data = await UserModel.create(user);
+    await userInsert(data);
+  }
 
-//     for (let user of sample_users) {
-//       user.password = await bcrypt.hash(
-//         user.password,
-//         PASSWORD_HASH_SALT_ROUNDS
-//       );
+  console.log("Users seed is done!");
+}
 
-//       await userInsert(user);
-//       await console.log(user);
-//     }
+async function userInsert(user) {
+  const sql = `
+    INSERT INTO users (id, name, email, password, address, isAdmin)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
 
-//     console.log("User seed is done!");
-//   } catch (error) {
-//     console.error("Error seeding users:", error);
-//   }
-// }
+  try {
+    const [result] = await global.db.query(sql, [
+      user.id,
+      user.name,
+      user.email,
+      user.password,
+      user.address,
+      user.isAdmin,
+    ]);
 
-// async function userInsert(user) {
-//   // SQL query with placeholders for values
-//   const sql = `
-//     INSERT INTO users (name, email, password, address, is_admin)
-//     VALUES (?, ?, ?, ?, ?)
-//   `;
+    console.log("Insert successful:", result);
+  } catch (error) {
+    console.error("Error inserting users:", error);
+  }
+}
 
-//   try {
-//     // Execute the query with the values array
-//     const [result] = await global.dbconn.query(sql, [
-//       user.name,
-//       user.email,
-//       user.password,
-//       user.address,
-//       user.isAdmin,
-//     ]);
+async function seedFood() {
+  const [rows] = await global.db.query("SELECT COUNT(*) AS count FROM foods");
+  const count = rows[0].count;
+  const usersCount = await FoodModel.countDocuments();
+  if (count > 0 && usersCount > 0) {
+    console.log("Foods item is already exist!");
+    return;
+  }
 
-//     console.log("Insert successful:", result);
-//   } catch (error) {
-//     console.error("Error inserting users:", error);
-//   }
-// }
+  for (let user of sample_foods) {
+    var data = await FoodModel.create(user);
+    await foodInsert(data);
+  }
 
-// async function seedFoods() {
-//   try {
-//     // Query to count the number of rows in the 'foods' table
-//     const [rows] = await global.dbconn.query(
-//       "SELECT COUNT(*) AS count FROM foods"
-//     );
-//     const count = rows[0].count;
+  console.log("Food Item is done!");
+}
 
-//     if (count > 0) {
-//       console.log("Foods seed is already done!");
-//       return;
-//     }
+async function foodInsert(user) {
+  const sql = `
+    INSERT INTO foods (id, name, price ,favorite ,stars ,imageUrl ,cookTime)
+    VALUES (?,?,?,?,?,?,?)
+  `;
 
-//     for (const food of sample_foods) {
-//       food.imageUrl = `${food.imageUrl}`;
-//       food.origins = JSON.stringify(food.origins);
-//       food.tags = JSON.stringify(food.tags);
-//       await insertFood(food);
-//     }
+  try {
+    const [result] = await global.db.query(sql, [
+      user.id,
+      user.name,
+      user.price,
+      user.favorite,
+      user.stars,
+      user.imageUrl,
+      user.cookTime,
+    ]);
 
-//     console.log("Foods seed is done!");
-//   } catch (error) {
-//     console.error("Error seeding foods:", error);
-//   }
-// }
-
-// async function insertFood(food) {
-//   // SQL query with placeholders for values
-//   const sql = `
-//     INSERT INTO foods (name, price, cookTime, favorite, origins, stars, imageUrl, tags)
-//     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-//   `;
-
-//   try {
-//     // Execute the query with the values array
-//     const [result] = await global.dbconn.query(sql, [
-//       food.name,
-//       food.price,
-//       food.cookTime,
-//       food.favorite,
-//       food.origins,
-//       food.stars,
-//       food.imageUrl,
-//       food.tags,
-//     ]);
-
-//     console.log("Insert successful:", result);
-//   } catch (error) {
-//     console.error("Error inserting food:", error);
-//   }
-// }
+    console.log("Insert successful:", result);
+  } catch (error) {
+    console.error("Error inserting users:", error);
+  }
+}

@@ -1,12 +1,12 @@
-import { Router } from 'express';
-import { FoodModel } from '../models/food.model.js';
-import handler from 'express-async-handler';
-import admin from '../middleware/admin.mid.js';
+import { Router } from "express";
+import { FoodModel } from "../models/food.model.js";
+import handler from "express-async-handler";
+import admin from "../middleware/admin.mid.js";
 
 const router = Router();
 
 router.get(
-  '/',
+  "/",
   handler(async (req, res) => {
     const foods = await FoodModel.find({});
     res.send(foods);
@@ -14,19 +14,21 @@ router.get(
 );
 
 router.post(
-  '/',
+  "/",
   admin,
   handler(async (req, res) => {
-    const { name, price, tags, favorite, imageUrl, origins, cookTime } =
-      req.body;
+    const { name, price, stock, tags, favorite, origins, cookTime } = req.body;
+
+    var imageUrl = "foods/food-1.jpg";
 
     const food = new FoodModel({
       name,
       price,
-      tags: tags.split ? tags.split(',') : tags,
+      stock,
+      tags: tags.split ? tags.split(",") : tags,
       favorite,
       imageUrl,
-      origins: origins.split ? origins.split(',') : origins,
+      origins: origins.split ? origins.split(",") : origins,
       cookTime,
     });
 
@@ -37,21 +39,31 @@ router.post(
 );
 
 router.put(
-  '/',
+  "/",
   admin,
   handler(async (req, res) => {
-    const { id, name, price, tags, favorite, imageUrl, origins, cookTime } =
-      req.body;
+    const {
+      id,
+      name,
+      price,
+      stock,
+      tags,
+      favorite,
+      imageUrl,
+      origins,
+      cookTime,
+    } = req.body;
 
     await FoodModel.updateOne(
       { _id: id },
       {
         name,
         price,
-        tags: tags.split ? tags.split(',') : tags,
+        stock,
+        tags: tags.split ? tags.split(",") : tags,
         favorite,
         imageUrl,
-        origins: origins.split ? origins.split(',') : origins,
+        origins: origins.split ? origins.split(",") : origins,
         cookTime,
       }
     );
@@ -61,7 +73,7 @@ router.put(
 );
 
 router.delete(
-  '/:foodId',
+  "/:foodId",
   admin,
   handler(async (req, res) => {
     const { foodId } = req.params;
@@ -71,29 +83,29 @@ router.delete(
 );
 
 router.get(
-  '/tags',
+  "/tags",
   handler(async (req, res) => {
     const tags = await FoodModel.aggregate([
       {
-        $unwind: '$tags',
+        $unwind: "$tags",
       },
       {
         $group: {
-          _id: '$tags',
+          _id: "$tags",
           count: { $sum: 1 },
         },
       },
       {
         $project: {
           _id: 0,
-          name: '$_id',
-          count: '$count',
+          name: "$_id",
+          count: "$count",
         },
       },
     ]).sort({ count: -1 });
 
     const all = {
-      name: 'All',
+      name: "All",
       count: await FoodModel.countDocuments(),
     };
 
@@ -104,10 +116,10 @@ router.get(
 );
 
 router.get(
-  '/search/:searchTerm',
+  "/search/:searchTerm",
   handler(async (req, res) => {
     const { searchTerm } = req.params;
-    const searchRegex = new RegExp(searchTerm, 'i');
+    const searchRegex = new RegExp(searchTerm, "i");
 
     const foods = await FoodModel.find({ name: { $regex: searchRegex } });
     res.send(foods);
@@ -115,7 +127,7 @@ router.get(
 );
 
 router.get(
-  '/tag/:tag',
+  "/tag/:tag",
   handler(async (req, res) => {
     const { tag } = req.params;
     const foods = await FoodModel.find({ tags: tag });
@@ -124,7 +136,7 @@ router.get(
 );
 
 router.get(
-  '/:foodId',
+  "/:foodId",
   handler(async (req, res) => {
     const { foodId } = req.params;
     const food = await FoodModel.findById(foodId);

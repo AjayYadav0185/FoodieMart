@@ -7,7 +7,6 @@ import Title from "../../components/Title/Title";
 import InputContainer from "../../components/InputContainer/InputContainer";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
-import { uploadImage } from "../../services/uploadService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -49,12 +48,6 @@ export default function FoodEditPage() {
     navigate("/admin/editFood/" + newFood.id, { replace: true });
   };
 
-  const upload = async (event) => {
-    setImageUrl(null);
-    const imageUrl = await uploadImage(event);
-    setImageUrl(imageUrl);
-  };
-
   return (
     <div className={classes.container}>
       <div className={classes.content}>
@@ -64,10 +57,6 @@ export default function FoodEditPage() {
           onSubmit={handleSubmit(submit)}
           noValidate
         >
-          <InputContainer label="Select Image">
-            <input type="file" onChange={upload} accept="image/jpeg" />
-          </InputContainer>
-
           {imageUrl && (
             <a href={imageUrl} className={classes.image_link} target="blank">
               <img src={`/${imageUrl}`} alt="Uploaded" />
@@ -86,6 +75,13 @@ export default function FoodEditPage() {
             label="Price"
             {...register("price", { required: true })}
             error={errors.price}
+          />
+
+          <Input
+            type="number"
+            label="Stock"
+            {...register("stock", { required: true })}
+            error={errors.stock}
           />
 
           <Input

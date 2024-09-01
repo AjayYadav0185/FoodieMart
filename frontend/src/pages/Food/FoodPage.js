@@ -7,6 +7,7 @@ import { useCart } from "../../hooks/useCart";
 import { getById } from "../../services/foodService";
 import classes from "./foodPage.module.css";
 import NotFound from "../../components/NotFound/NotFound";
+import Stock from "../../components/Stock/stock";
 export default function FoodPage() {
   const [food, setFood] = useState({});
   const { id } = useParams();
@@ -76,6 +77,10 @@ export default function FoodPage() {
 
             <div className={classes.price}>
               <Price price={food.price} />
+            </div>
+
+            <div className={classes.stock}>
+              <Stock stock={food.stock} />
             </div>
 
             <button onClick={handleAddToCart}>Add To Cart</button>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Price from "../../components/Price/Price";
 import Title from "../../components/Title/Title";
@@ -6,7 +6,26 @@ import { useCart } from "../../hooks/useCart";
 import classes from "./cartPage.module.css";
 import NotFound from "../../components/NotFound/NotFound";
 export default function CartPage() {
-  const { cart, removeFromCart, changeQuantity } = useCart();
+  const { cart, removeFromCart, changeQuantity, clearCart, applyCoupon } =
+    useCart();
+
+  const [couponCode, setCouponCode] = useState("");
+  const [manageCouponSection, setManageCouponSection] = useState(false);
+
+  const manageCoupon = (event) => {
+    setManageCouponSection(!event);
+    clearCart();
+  };
+
+  const handleCouponChange = (event) => {
+    setCouponCode(event.target.value);
+  };
+
+  const handleApplyCoupon = () => {
+    // Call the applyCoupon function with the coupon code
+    applyCoupon(couponCode);
+  };
+
   return (
     <>
       <Title title="Cart Page" margin="1.5rem 0 0 2.5rem" />
@@ -53,10 +72,17 @@ export default function CartPage() {
 
                 <div>
                   <button
-                    className={classes.remove_button}
+                    className={classes.button}
                     onClick={() => removeFromCart(item.food.id)}
                   >
                     Remove
+                  </button>
+
+                  <button
+                    className={classes.button}
+                    onClick={() => manageCoupon(manageCouponSection)}
+                  >
+                    Apply Code
                   </button>
                 </div>
               </li>
@@ -66,6 +92,23 @@ export default function CartPage() {
           <div className={classes.checkout}>
             <div>
               <div className={classes.foods_count}>{cart.totalCount}</div>
+              {manageCouponSection && (
+                <div className={classes.couponSection}>
+                  <input
+                    type="text"
+                    value={couponCode}
+                    onChange={handleCouponChange}
+                    placeholder="Enter coupon code"
+                    className={classes.couponInput}
+                  />
+                  <button
+                    className={classes.couple_button}
+                    onClick={handleApplyCoupon}
+                  >
+                    Apply Code
+                  </button>
+                </div>
+              )}
               <div className={classes.total_price}>
                 <Price price={cart.totalPrice} />
               </div>

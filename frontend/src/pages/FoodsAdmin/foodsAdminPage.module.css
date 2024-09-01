@@ -29,6 +29,7 @@ a.add_food:hover {
     minmax(5rem, 7rem)
     minmax(10rem, 20rem)
     minmax(5rem, 10rem)
+    minmax(5rem, 10rem)
     minmax(5rem, 10rem);
   font-size: 1.2rem;
   height: 5rem;

@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import classes from './foodsAdminPage.module.css';
-import { Link, useParams } from 'react-router-dom';
-import { deleteById, getAll, search } from '../../services/foodService';
-import NotFound from '../../components/NotFound/NotFound';
-import Title from '../../components/Title/Title';
-import Search from '../../components/Search/Search';
-import Price from '../../components/Price/Price';
-import { toast } from 'react-toastify';
+import { useEffect, useState } from "react";
+import classes from "./foodsAdminPage.module.css";
+import { Link, useParams } from "react-router-dom";
+import { deleteById, getAll, search } from "../../services/foodService";
+import NotFound from "../../components/NotFound/NotFound";
+import Title from "../../components/Title/Title";
+import Search from "../../components/Search/Search";
+import Price from "../../components/Price/Price";
+import { toast } from "react-toastify";
+import Stock from "../../components/Stock/stock";
 
 export default function FoodsAdminPage() {
   const [foods, setFoods] = useState();
@@ -31,13 +32,13 @@ export default function FoodsAdminPage() {
     );
   };
 
-  const deleteFood = async food => {
+  const deleteFood = async (food) => {
     const confirmed = window.confirm(`Delete Food ${food.name}?`);
     if (!confirmed) return;
 
     await deleteById(food.id);
     toast.success(`"${food.name}" Has Been Removed!`);
-    setFoods(foods.filter(f => f.id !== food.id));
+    setFoods(foods.filter((f) => f.id !== food.id));
   };
 
   return (
@@ -55,13 +56,14 @@ export default function FoodsAdminPage() {
         </Link>
         <FoodsNotFound />
         {foods &&
-          foods.map(food => (
+          foods.map((food) => (
             <div key={food.id} className={classes.list_item}>
-              <img src={food.imageUrl} alt={food.name} />
-              <Link to={'/food/' + food.id}>{food.name}</Link>
+              <img src={`/${food.imageUrl}`} alt={food.name} />
+              <Link to={"/food/" + food.id}>{food.name}</Link>
               <Price price={food.price} />
+              <Stock stock={food.stock} />
               <div className={classes.actions}>
-                <Link to={'/admin/editFood/' + food.id}>Edit</Link>
+                <Link to={"/admin/editFood/" + food.id}>Edit</Link>
                 <Link onClick={() => deleteFood(food)}>Delete</Link>
               </div>
             </div>

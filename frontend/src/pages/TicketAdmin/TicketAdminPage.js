@@ -29,10 +29,36 @@ export default function TicketAdminPage() {
     );
   };
 
-  const deleteTicket = async (ticket) => {
-    const confirmed = window.confirm(`Delete ticket ${ticket.label}?`);
-    if (!confirmed) return;
+  const deleteTicket = (ticket) => {
+    const notify = () => {
+      toast.info(
+        <div>
+          <p>Delete ticket {ticket.label}?</p>
+          <button onClick={() => handleConfirm(true)}>Yes</button>
+          <button onClick={() => handleConfirm(false)}>No</button>
+        </div>,
+        {
+          autoClose: false, // Prevent the toast from auto-closing
+          closeButton: false, // Disable the close button
+        }
+      );
+    };
 
+    const handleConfirm = (confirmed) => {
+      if (confirmed) {
+        removeTicket(ticket);
+        console.log("Ticket deleted:", ticket);
+        // loadTickets();
+      } else {
+        console.log("Deletion cancelled");
+      }
+
+      toast.dismiss();
+    };
+    notify();
+  };
+
+  const removeTicket = async (ticket) => {
     await deleteById(ticket.id);
     toast.success(`"${ticket.label}" Has Been Removed!`);
     setTickets(tickets.filter((f) => f.label !== ticket.id));

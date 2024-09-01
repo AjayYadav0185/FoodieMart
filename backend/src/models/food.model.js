@@ -3,6 +3,7 @@ import { model, Schema } from "mongoose";
 export const FoodSchema = new Schema(
   {
     name: { type: String, required: true },
+    stock: { type: Number, default: 0  },
     price: { type: Number, required: true },
     tags: { type: [String] },
     favorite: { type: Boolean, default: false },

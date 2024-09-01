@@ -18,6 +18,10 @@ export default function FoodPage() {
     navigate("/cart");
   };
 
+  const onErrorHandleChanges = (event) => {
+    event.target.src = "http://localhost:3000/foods/food-5.jpg";
+  };
+
   useEffect(() => {
     getById(id).then(setFood);
   }, [id]);
@@ -29,7 +33,8 @@ export default function FoodPage() {
         <div className={classes.container}>
           <img
             className={classes.image}
-            src={`${food.imageUrl}`}
+            src={`/${food.imageUrl}`}
+            onError={onErrorHandleChanges}
             alt={food.name}
           />
 

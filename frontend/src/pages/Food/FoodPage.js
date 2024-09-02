@@ -42,13 +42,6 @@ export default function FoodPage() {
           <div className={classes.details}>
             <div className={classes.header}>
               <span className={classes.name}>{food.name}</span>
-              <span
-                className={`${classes.favorite} ${
-                  food.favorite ? "" : classes.not
-                }`}
-              >
-                ❤
-              </span>
             </div>
             <div className={classes.rating}>
               <StarRating stars={food.stars} size={25} />

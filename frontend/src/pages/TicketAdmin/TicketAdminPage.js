@@ -61,7 +61,7 @@ export default function TicketAdminPage() {
   const removeTicket = async (ticket) => {
     await deleteById(ticket.id);
     toast.success(`"${ticket.label}" Has Been Removed!`);
-    setTickets(tickets.filter((f) => f.label !== ticket.id));
+    setTickets(tickets.filter((f) => f.id !== ticket.id));
   };
 
   return (
